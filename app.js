@@ -1,25 +1,20 @@
-const express = require("express");
-const socket = require("socket.io");
-
-
-// App setup
-const PORT = 5000;
-const app = express();
-
-
-const Message = require("./models/message.schema");
-const User = require("./models/user.schema");
-
-
-const server = app.listen(PORT, function () {
-    console.log(`Listening on port ${PORT}`);
-    console.log(`http://localhost:${PORT}`);
+var app = require( 'express' )();
+require("dotenv").config();
+// mongo db connection
+require("./config/mongodb.config").sync;
+var http = require( 'http' ).createServer( app );
+var io = require( 'socket.io' )( http );
+app.get('/', function(req, res){
+    res.sendFile(__dirname + '/index.html');
 });
-const io = socket(server);
+const mongoose = require("mongoose");
+require("./models/user.schema");
+require("./models/chatroom.schema");
+require("./models/message.schema");
 
+const Message = mongoose.model("message");
+const User = mongoose.model("User");
 
-
-// get user connected by id
 
 io.use(async (socket, next) => {
     try {
@@ -82,14 +77,17 @@ io.on("connection", (socket) => {
 });
 
 //Setup Error Handlers
-const errorHandlers = require("./handlers/errorHandlers");
-app.use(errorHandlers.notFound);
-app.use(errorHandlers.mongoseErrors);
-if (process.env.ENV === "DEVELOPMENT") {
-  app.use(errorHandlers.developmentErrors);
-} else {
-  app.use(errorHandlers.productionErrors);
-}
+// const errorHandlers = require("./handlers/errorHandlers");
+// app.use(errorHandlers.notFound);
+// app.use(errorHandlers.mongoseErrors);
+// if (process.env.ENV === "DEVELOPMENT") {
+//   app.use(errorHandlers.developmentErrors);
+// } else {
+//   app.use(errorHandlers.productionErrors);
+// }
 
+http.listen(5000, function(){
+    console.log('listening on *:5000');
+ });
 
 module.exports = app;
