@@ -68,6 +68,7 @@ io.on("connection", (socket) => {
                 message: msg,
                 _id: newMessage._id,
                 user: user,
+                createdAt: newMessage.createdAt,
             });
             await newMessage.save();
         } catch (err) {
