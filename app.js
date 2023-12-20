@@ -63,6 +63,22 @@ io.on("connection", async (socket) => {
         }
     });
 
+    socket.on("getAllMessages", async ({ chatroomId }) => {
+        try {
+            // Obtener y enviar todos los mensajes en esa sala al unirse
+            const messages = await Message.find({ chatroom: chatroomId })
+                .populate("user", "name")
+                .sort({ createdAt: "asc" })
+                .limit(100);
+            console.log(messages, "messages");
+            // socket.emit("allMessages", messages.reverse());
+            // emit to the user only
+            socket.emit("allMessages", messages.reverse());
+        } catch (err) {
+            console.error(err);
+        }
+    });
+
     // Evento para salir de una sala
     socket.on("leaveRoom", ({ chatroomId }) => {
         socket.leave(chatroomId);
