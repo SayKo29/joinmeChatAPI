@@ -73,20 +73,27 @@ io.on("connection", async (socket) => {
     socket.on("chatroomMessage", async ({ msg, chatroomId }) => {
         try {
             const user = await User.findById(socket.userId);
+            if (!user) {
+                throw new Error("User not found");
+            }
+
             const newMessage = new Message({
                 user: user,
                 message: msg,
                 chatroom: chatroomId,
             });
+
+            await newMessage.save();
+
             io.to(chatroomId).emit("newMessage", {
-                message: msg,
                 _id: newMessage._id,
                 user: user,
+                message: newMessage.message, // Ensure you are sending the actual message
                 createdAt: newMessage.createdAt,
             });
-            await newMessage.save();
         } catch (err) {
             console.error(err);
+            socket.emit("chatroomMessageError", { error: err.message });
         }
     });
 });
