@@ -6,7 +6,7 @@ const Message = require("../models/message.schema");
 const getChatroomMessages = async (chatroomId) => {
     try {
         const messages = await Message.find({ chatroom: chatroomId })
-            .sort({ createdAt: 1 })
+            .sort({ createdAt: -1 })
             .populate({ path: "user", select: "name" });
         return messages;
     } catch (error) {

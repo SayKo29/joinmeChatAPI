@@ -14,6 +14,7 @@ const handleConnection = (socket) => {
     });
 
     socket.on("leaveRoom", (chatRoomId) => {
+        console.log("User left room" + chatRoomId);
         socket.leave(chatRoomId);
     });
 
