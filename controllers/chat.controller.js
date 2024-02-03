@@ -21,7 +21,7 @@ exports.newChatroom = (req, res) => {
                     "Some error occurred while creating the new chatroom.",
             });
         });
-}
+};
 
 exports.getChatrooms = (req, res) => {
     Schema.find()
@@ -35,25 +35,25 @@ exports.getChatrooms = (req, res) => {
                     "Some error occurred while retrieving chatrooms.",
             });
         });
-}
+};
 
 exports.findById = (req, res) => {
-
     const id = req.params.id;
 
     Schema.findById(id)
         .then((data) => {
             if (!data)
-                res.status(404).send({ message: "Not found chatroom with id " + id });
+                res.status(404).send({
+                    message: "Not found chatroom with id " + id,
+                });
             else res.send(data);
         })
         .catch((err) => {
-            res
-                .status(500)
-                .send({ message: "Error retrieving chatroom with id=" + id });
-        }
-        );
-}
+            res.status(500).send({
+                message: "Error retrieving chatroom with id=" + id,
+            });
+        });
+};
 
 exports.updateChatroom = (req, res) => {
     if (!req.body) {
@@ -77,7 +77,7 @@ exports.updateChatroom = (req, res) => {
                 message: "Error updating chatroom with id=" + id,
             });
         });
-}
+};
 
 exports.deleteChatroom = (req, res) => {
     const id = req.params.id;
@@ -99,4 +99,25 @@ exports.deleteChatroom = (req, res) => {
                 message: "Could not delete chatroom with id=" + id,
             });
         });
-}
+};
+
+exports.handleJoinRoom = (socket, data) => {
+    const { chatroomId } = data;
+    socket.join(chatroomId);
+};
+
+exports.handleLeaveRoom = (socket, data) => {
+    const { chatroomId } = data;
+    socket.leave(chatroomId);
+};
+
+exports.handleChatroomMessage = async (socket, data) => {
+    const { chatroomId, message } = data;
+    const newMessage = new Message({
+        chatroom: chatroomId,
+        sender: socket.user._id,
+        message,
+    });
+    await newMessage.save();
+    socket.to(chatroomId).emit("chatroomMessage", newMessage);
+};

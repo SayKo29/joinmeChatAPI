@@ -23,7 +23,7 @@ exports.newMessage = (req, res) => {
                     "Some error occurred while creating the new message.",
             });
         });
-}
+};
 
 exports.getMessages = (req, res) => {
     Schema.find()
@@ -37,26 +37,26 @@ exports.getMessages = (req, res) => {
                     "Some error occurred while retrieving messages.",
             });
         });
-}
+};
 
 exports.getMessage = (req, res) => {
-    
-        const id = req.params.id;
-    
-        Schema.findById(id)
-            .then((data) => {
-                if (!data)
-                    res.status(404).send({ message: "Not found message with id " + id });
-                else res.send(data);
-            }
-            )
-            .catch((err) => {
-                res
-                    .status(500)
-                    .send({ message: "Error retrieving message with id=" + id });
-            }
-            );
-    }
+    const id = req.params.id;
+
+    Schema.findById(id)
+        .populate("user", "username")
+        .then((data) => {
+            if (!data)
+                res.status(404).send({
+                    message: "Not found message with id " + id,
+                });
+            else res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Error retrieving message with id=" + id,
+            });
+        });
+};
 
 exports.updateMessage = (req, res) => {
     if (!req.body) {
@@ -80,7 +80,7 @@ exports.updateMessage = (req, res) => {
                 message: "Error updating message with id=" + id,
             });
         });
-}
+};
 
 exports.deleteMessage = (req, res) => {
     const id = req.params.id;
@@ -102,4 +102,4 @@ exports.deleteMessage = (req, res) => {
                 message: "Could not delete message with id=" + id,
             });
         });
-}
+};

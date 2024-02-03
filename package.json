@@ -4,11 +4,11 @@
     "license": "MIT",
     "version": "1.0.0",
     "engines": {
-        "node": "14.x",
-        "npm": "8.x"
+        "node": "18.x",
+        "npm": "10.x"
     },
     "description": "Node.js Restful CRUD and Auth API with Node.js, Express, Mongoose and MongoDB Atlas",
-    "private": false,
+    "private": true,
     "main": "app.js",
     "keywords": [
         "nodejs",
@@ -33,7 +33,8 @@
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.6.5",
         "morgan": "^1.10.0",
-        "socket.io": "^4.5.3",
+        "socket.io": "^4.7.4",
+        "socketio-jwt": "^4.6.2",
         "uuid": "^9.0.0"
     },
     "devDependencies": {
