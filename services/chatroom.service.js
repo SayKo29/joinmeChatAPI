@@ -10,14 +10,14 @@ const getChatroomMessages = async (chatroomId) => {
             .populate({ path: "user", select: "name" });
         return messages;
     } catch (error) {
-        console.log(error);
+
     }
 };
 
 const sendChatroomMessage = async (data) => {
     try {
         const message = new Message({
-            user: data.user.id,
+            user: data.user._id,
             chatroom: data.chatroom,
             message: data.message,
         });
@@ -28,7 +28,7 @@ const sendChatroomMessage = async (data) => {
         });
         return newMessage;
     } catch (error) {
-        console.log(error);
+
     }
 };
 

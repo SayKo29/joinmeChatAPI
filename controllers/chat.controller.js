@@ -1,13 +1,13 @@
 const Schema = require("../models/chatroom.schema");
 
 exports.newChatroom = (req, res) => {
-    console.log(req.body);
+
     //
     const newData = Schema({
         name: req.body.name,
     });
 
-    console.log("prueba funciona?" + newData);
+
 
     newData
         .save(newData)
@@ -112,6 +112,7 @@ exports.handleLeaveRoom = (socket, data) => {
 };
 
 exports.handleChatroomMessage = async (socket, data) => {
+
     const { chatroomId, message } = data;
     const newMessage = new Message({
         chatroom: chatroomId,

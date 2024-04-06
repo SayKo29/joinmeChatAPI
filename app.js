@@ -31,5 +31,5 @@ io.on("chatroomMessage", chatController.handleChatroomMessage);
 // Iniciar el servidor
 const PORT = process.env.PORT || 5000;
 http.listen(PORT, () => {
-    console.log("Server is listening on port " + PORT);
+
 });

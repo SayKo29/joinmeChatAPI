@@ -1,7 +1,7 @@
 const Schema = require("../models/category.schema");
 
 exports.newEvent = (req, res) => {
-    console.log(req.body);
+
     if (!req.body)
         return res.status(400).send({ message: "Content can not be empty!" });
     if (!req.body.name)
@@ -20,7 +20,7 @@ exports.newEvent = (req, res) => {
     newData
         .save()
         .then((data) => {
-            console.log("Category created.");
+
             return res.status(200).send({
                 message: "Category created.",
                 event: {
@@ -32,7 +32,7 @@ exports.newEvent = (req, res) => {
             });
         })
         .catch((err) => {
-            console.log("Error: ", err);
+
             return res.status(500).send({
                 message: "Error creating category.",
             });
@@ -81,7 +81,7 @@ exports.findById = (req, res) => {
 
 // update a event data identified by the  id in the request
 exports.findOneAndUpdate = (req, res) => {
-    console.log(req.body);
+
     Schema.findById({ _id: req.params.id })
         .then((currentData) => {
             let { newName, newDescription, newIcon } = "";
@@ -111,13 +111,13 @@ exports.findOneAndUpdate = (req, res) => {
                 icon: newIcon,
                 _id: req.params.id,
             });
-            console.log(newData);
+
             // update with new data
             Schema.findByIdAndUpdate({ _id: req.params.id }, newData, {
                 new: true,
             })
                 .then((updatedData) => {
-                    console.log("success update data");
+
                     return res.status(200).send(updatedData);
                 })
                 .catch((err) => {
@@ -154,7 +154,7 @@ exports.findByIdAndRemove = (req, res) => {
                     message: "data not found with id " + req.params.id,
                 });
             }
-            console.log("data deleted successfully!");
+
             return res
                 .status(200)
                 .send({ message: "data deleted successfully!" });

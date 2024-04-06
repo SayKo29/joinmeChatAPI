@@ -1,7 +1,7 @@
 const Schema = require("../models/message.schema");
 
 exports.newMessage = (req, res) => {
-    console.log(req.body);
+
     //
     const newData = Schema({
         user: req.body.user,
@@ -9,7 +9,7 @@ exports.newMessage = (req, res) => {
         chatroom: req.body.chatroom,
     });
 
-    console.log("prueba funciona?" + newData);
+
 
     newData
         .save(newData)

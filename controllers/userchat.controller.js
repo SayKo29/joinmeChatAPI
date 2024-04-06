@@ -8,17 +8,19 @@ const {
 } = require("../services/chatroom.service");
 
 const handleConnection = (socket) => {
+
     socket.on("joinRoom", (chatRoomId) => {
-        console.log("User joined room" + chatRoomId);
+
         socket.join(chatRoomId);
     });
 
     socket.on("leaveRoom", (chatRoomId) => {
-        console.log("User left room" + chatRoomId);
+
         socket.leave(chatRoomId);
     });
 
     socket.on("chatroomMessage", async (data) => {
+
         const message = await sendChatroomMessage(data);
         socket.to(data.chatroom).emit("newMessage", message);
     });
@@ -36,12 +38,12 @@ const handleConnection = (socket) => {
 
 const handleDisconnection = (socket) => {
     socket.on("disconnect", () => {
-        console.log("User disconnected");
+
     });
 };
 
 const handleReconnection = (socket) => {
-    console.log("User reconnected");
+
 };
 
 module.exports = {
